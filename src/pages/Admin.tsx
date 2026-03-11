@@ -97,7 +97,6 @@ export default function Admin() {
     return acc + curr.adults + curr.children;
   }, 0);
 
-  const declinedCount = rsvps.filter(r => r.attending === 'no').length;
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
@@ -126,15 +125,7 @@ export default function Admin() {
             </div>
           </div>
           
-          <div className="card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ backgroundColor: 'var(--error)', padding: '1rem', borderRadius: '50%', color: 'white' }}>
-              <Users size={32} style={{ transform: 'scaleX(-1)' }} />
-            </div>
-            <div>
-              <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase' }}>Não Comparecerão</p>
-              <h2 style={{ fontSize: '2.5rem', margin: 0 }}>{declinedCount}</h2>
-            </div>
-          </div>
+
         </div>
 
         <div className="card" style={{ maxWidth: '100%', overflowX: 'auto' }}>
