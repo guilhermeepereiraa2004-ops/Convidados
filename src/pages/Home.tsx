@@ -58,18 +58,8 @@ export default function Home() {
               </p>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
-                <a 
-                  href="https://enxovalgeg.vercel.app/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn"
-                  style={{ width: '100%' }}
-                >
-                  <Gift size={20} />
-                  Ver Lista de Enxoval
-                </a>
                 <button className="btn btn-secondary" onClick={() => window.location.reload()}>
-                  Nova Resposta
+                  Retornar ao site
                 </button>
               </div>
             </div>
