@@ -10,6 +10,13 @@ export default function Admin() {
   const [rsvps, setRsvps] = useState<any[]>([]);
 
   useEffect(() => {
+    const authStatus = localStorage.getItem('admin_authenticated');
+    if (authStatus === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       if (isAuthenticated) {
         // 1. Fetch from Supabase
@@ -43,6 +50,7 @@ export default function Admin() {
     e.preventDefault();
     if (password === 'Ggap121021') {
       setIsAuthenticated(true);
+      localStorage.setItem('admin_authenticated', 'true');
       setError('');
     } else {
       setError('Senha incorreta. Tente novamente.');
@@ -51,6 +59,7 @@ export default function Admin() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem('admin_authenticated');
     setPassword('');
   };
 
