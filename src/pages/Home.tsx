@@ -132,7 +132,7 @@ export default function Home() {
           </div>
           <div className="hero-photo-wrapper animate-fade-in delay-2">
             <div className="hero-photo-inner">
-              <img src="/fotonova.jpg" alt="Gabrielle & Guilherme" className="hero-photo" />
+              <img src="/capa.jpg" alt="Gabrielle & Guilherme" className="hero-photo" />
             </div>
           </div>
         </div>
