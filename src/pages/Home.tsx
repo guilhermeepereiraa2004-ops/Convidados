@@ -132,7 +132,7 @@ export default function Home() {
           </div>
           <div className="hero-photo-wrapper animate-fade-in delay-2">
             <div className="hero-photo-inner">
-              <img src="/capa.jpg" alt="Gabrielle & Guilherme" className="hero-photo" />
+              <img src="/fotonova.jpg" alt="Gabrielle & Guilherme" className="hero-photo" />
             </div>
           </div>
         </div>
@@ -165,31 +165,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Você irá comparecer?</label>
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                    <input 
-                      type="radio" 
-                      name="attending" 
-                      value="yes" 
-                      checked={formData.attending === 'yes'}
-                      onChange={e => setFormData({...formData, attending: e.target.value})}
-                    />
-                    <span>Sim</span>
-                  </label>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                    <input 
-                      type="radio" 
-                      name="attending" 
-                      value="no"
-                      checked={formData.attending === 'no'}
-                      onChange={e => setFormData({...formData, attending: e.target.value})}
-                    />
-                    <span>Não</span>
-                  </label>
-                </div>
-              </div>
+
 
 
 

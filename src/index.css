@@ -162,7 +162,7 @@ a {
   align-items: center;
   justify-content: center;
   padding: 4rem 1.5rem;
-  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.75)), url('/capa.jpg') no-repeat center 80%;
+  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.75)), url('/fotonova.jpg') no-repeat center 80%;
   background-size: cover;
   position: relative;
   overflow: hidden;
@@ -267,7 +267,7 @@ a {
   .hero {
     min-height: 100vh;
     padding: 6rem 2rem;
-    background: url('/capa.jpg') no-repeat center 72%;
+    background: url('/fotonova.jpg') no-repeat center 72%;
     background-size: cover;
     background-attachment: fixed;
     text-align: left;
