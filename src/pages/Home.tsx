@@ -149,7 +149,7 @@ export default function Home() {
           <div className="card animate-fade-in delay-3" style={{ transform: 'translateY(-20px)' }}>
             <h2 className="text-center mb-4">Confirme sua Presença</h2>
             <p className="text-center mb-4" style={{ color: 'var(--text-light)' }}>
-              Por favor, confirme sua presença até o dia 12 de Junho para nos ajudar com a organização.
+              Por favor, confirme sua presença para nos ajudar com a organização.
             </p>
 
             <form onSubmit={handleSubmit}>
