@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+
+# Temporary/Unused images
+Foto Pier.jpg
+Foto nova.jpeg
+public/fotonova.jpg
+public/fotopier.jpg
