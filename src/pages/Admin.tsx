@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Lock, LogOut, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -9,17 +10,38 @@ export default function Admin() {
   const [rsvps, setRsvps] = useState<any[]>([]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const data = localStorage.getItem('rsvp_list');
-      if (data) {
-        setRsvps(JSON.parse(data));
+    const fetchData = async () => {
+      if (isAuthenticated) {
+        // 1. Fetch from Supabase
+        const { data: supabaseData, error } = await supabase
+          .from('rsvps')
+          .select('*')
+          .order('date', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching from Supabase:', error);
+        }
+
+        // 2. Load from localStorage (Local copies)
+        const localData = localStorage.getItem('rsvp_list');
+        const localRSVPs = localData ? JSON.parse(localData) : [];
+
+        // 3. Merge and deduplicate by ID if needed
+        // For simplicity, we prefer Supabase data but show local if it's the only thing available
+        if (supabaseData && supabaseData.length > 0) {
+          setRsvps(supabaseData);
+        } else {
+          setRsvps(localRSVPs);
+        }
       }
-    }
+    };
+
+    fetchData();
   }, [isAuthenticated]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === '1207') {
+    if (password === 'Ggap121021') {
       setIsAuthenticated(true);
       setError('');
     } else {
@@ -43,7 +65,7 @@ export default function Admin() {
             <div className="text-center mb-4">
               <Lock size={48} color="var(--primary)" style={{ margin: '0 auto' }} />
               <p className="mt-2" style={{ color: 'var(--text-light)' }}>
-                Digite a senha de acesso (Dica: é a data do casamento sem as barras: 1207)
+                Digite a senha de acesso
               </p>
             </div>
             

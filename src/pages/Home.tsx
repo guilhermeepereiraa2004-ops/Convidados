@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Heart, Calendar, MapPin, Check, Gift } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -18,20 +19,29 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Save to localStorage
-    const existing = localStorage.getItem('rsvp_list');
-    const rsvpList = existing ? JSON.parse(existing) : [];
     
     const newEntry = {
       ...formData,
       id: Date.now().toString(),
       date: new Date().toISOString()
     };
+
+    // 1. Save to Supabase (if configured)
+    const { error } = await supabase
+      .from('rsvps')
+      .insert([newEntry]);
+
+    if (error) {
+      console.error('Error saving to Supabase:', error);
+    }
     
+    // 2. Fallback/Local Copy: Save to localStorage
+    const existing = localStorage.getItem('rsvp_list');
+    const rsvpList = existing ? JSON.parse(existing) : [];
     localStorage.setItem('rsvp_list', JSON.stringify([...rsvpList, newEntry]));
+    
     setSubmitted(true);
   };
 
