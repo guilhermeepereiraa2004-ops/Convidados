@@ -7,7 +7,7 @@ export default function Home() {
     name: '',
     attending: 'yes',
     adults: 1,
-    children: 0,
+    companions: [] as string[],
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
@@ -19,28 +19,69 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleQuantityChange = (val: number) => {
+    const count = Math.max(1, val);
+    setFormData(prev => {
+      const newCompanions = [...prev.companions];
+      if (count > 1) {
+        if (newCompanions.length < count - 1) {
+          for (let i = newCompanions.length; i < count - 1; i++) newCompanions.push('');
+        } else {
+          newCompanions.length = count - 1;
+        }
+      } else {
+        newCompanions.length = 0;
+      }
+      return { ...prev, adults: count, companions: newCompanions };
+    });
+  };
+
+  const handleCompanionChange = (index: number, value: string) => {
+    const newCompanions = [...formData.companions];
+    newCompanions[index] = value;
+    setFormData({ ...formData, companions: newCompanions });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const newEntry = {
-      ...formData,
-      id: Date.now().toString(),
-      date: new Date().toISOString()
+    const id = Date.now().toString();
+    const date = new Date().toISOString();
+
+    // Create a version for Supabase that matches the existing schema columns exactly
+    const supabaseEntry = {
+      id,
+      date,
+      name: formData.companions.length > 0 
+        ? `${formData.name} (+ ${formData.companions.filter(n => n.trim() !== '').join(', ')})` 
+        : formData.name,
+      attending: formData.attending,
+      adults: formData.adults,
+      children: 0,
+      message: formData.message
     };
 
-    // 1. Save to Supabase (if configured)
+    // Full entry for local storage fallback (preserves companion array)
+    const localEntry = {
+      ...formData,
+      id,
+      date
+    };
+
+    // 1. Save to Supabase
     const { error } = await supabase
       .from('rsvps')
-      .insert([newEntry]);
+      .insert([supabaseEntry]);
 
     if (error) {
       console.error('Error saving to Supabase:', error);
+      // If it still fails, it might be because of a connection issue or other column mismatch
     }
     
-    // 2. Fallback/Local Copy: Save to localStorage
+    // 2. Save to localStorage
     const existing = localStorage.getItem('rsvp_list');
     const rsvpList = existing ? JSON.parse(existing) : [];
-    localStorage.setItem('rsvp_list', JSON.stringify([...rsvpList, newEntry]));
+    localStorage.setItem('rsvp_list', JSON.stringify([...rsvpList, localEntry]));
     
     setSubmitted(true);
   };
@@ -144,7 +185,7 @@ export default function Home() {
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label className="form-label">Nome Completo</label>
+                <label className="form-label">Seu Nome Completo</label>
                 <input 
                   type="text" 
                   className="form-control" 
@@ -155,9 +196,32 @@ export default function Home() {
                 />
               </div>
 
+              <div className="form-group mb-4">
+                <label className="form-label">Total de Pessoas (Incluindo você)</label>
+                <input 
+                  type="number" 
+                  className="form-control" 
+                  min="1"
+                  max="15"
+                  required
+                  value={formData.adults}
+                  onChange={e => handleQuantityChange(parseInt(e.target.value) || 1)}
+                />
+              </div>
 
-
-
+              {formData.companions.map((name, idx) => (
+                <div key={idx} className="form-group animate-fade-in" style={{ animationDuration: '0.3s' }}>
+                  <label className="form-label">Nome do Convidado {idx + 2}</label>
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    required 
+                    value={name}
+                    onChange={e => handleCompanionChange(idx, e.target.value)}
+                    placeholder={`Nome completo do ${idx + 2}º convidado`}
+                  />
+                </div>
+              ))}
 
               <div className="form-group">
                 <label className="form-label">Mensagem aos Noivos (Opcional)</label>
