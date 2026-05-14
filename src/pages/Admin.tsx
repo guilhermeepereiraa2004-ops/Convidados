@@ -37,9 +37,6 @@ export default function Admin() {
         } else {
           // If Supabase call is successful, we TRUST it, even if it's empty
           setRsvps(supabaseData || []);
-          
-          // Sync localStorage: We can clean it up here to match Supabase if desired,
-          // but for safety we'll just keep Supabase as what is shown in the UI.
         }
       }
     };
@@ -95,14 +92,6 @@ export default function Admin() {
       }
     } catch (err) {
       console.error('Error deleting RSVP from Supabase:', err);
-      // Even if Supabase fails, we keep the local deletion but warn the user
-      const localData = localStorage.getItem('rsvp_list');
-      if (localData) {
-        const localRSVPs = JSON.parse(localData);
-        const updatedLocal = localRSVPs.filter((r: any) => r.id !== id);
-        localStorage.setItem('rsvp_list', JSON.stringify(updatedLocal));
-      }
-      alert('Aviso: Excluído localmente, mas houve um erro ao sincronizar com o servidor. Verifique sua conexão.');
     } finally {
       setIsDeleting(null);
     }
