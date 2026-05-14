@@ -418,7 +418,7 @@ export default function Admin() {
                       className="form-control" 
                       min="0"
                       value={editingRsvp.adults}
-                      onChange={e => setEditingRsvp({...editingRsvp, adults: parseInt(e.target.value) || 0})}
+                      onChange={e => setEditingRsvp({...editingRsvp, adults: e.target.value === '' ? '' : parseInt(e.target.value) || 0})}
                     />
                   </div>
                   <div className="form-group">
@@ -428,7 +428,7 @@ export default function Admin() {
                       className="form-control" 
                       min="0"
                       value={editingRsvp.children}
-                      onChange={e => setEditingRsvp({...editingRsvp, children: parseInt(e.target.value) || 0})}
+                      onChange={e => setEditingRsvp({...editingRsvp, children: e.target.value === '' ? '' : parseInt(e.target.value) || 0})}
                     />
                   </div>
                 </div>

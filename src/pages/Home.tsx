@@ -19,8 +19,15 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleQuantityChange = (val: number) => {
-    const count = Math.max(1, val);
+  const handleQuantityChange = (rawVal: string) => {
+    if (rawVal === '') {
+      setFormData(prev => ({ ...prev, adults: '' as any, companions: [] }));
+      return;
+    }
+
+    const val = parseInt(rawVal);
+    const count = isNaN(val) ? 1 : Math.max(1, val);
+    
     setFormData(prev => {
       const newCompanions = [...prev.companions];
       if (count > 1) {
@@ -205,7 +212,7 @@ export default function Home() {
                   max="15"
                   required
                   value={formData.adults}
-                  onChange={e => handleQuantityChange(parseInt(e.target.value) || 1)}
+                  onChange={e => handleQuantityChange(e.target.value)}
                 />
               </div>
 
